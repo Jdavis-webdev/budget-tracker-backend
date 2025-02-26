@@ -1,20 +1,19 @@
 const express = require("express");
 const plaid = require("plaid");
-const User = require("../models/User");
 const dotenv = require("dotenv");
 dotenv.config();
 
 const router = express.Router();
+const User = require("../models/User");
 
 const plaidClient = new plaid.PlaidApi(
   new plaid.Configuration({
-    basePath: plaid.PlaidEnvironments.sandbox,
+    basePath: plaid.PlaidEnvironments.sandbox, 
     clientId: process.env.PLAID_CLIENT_ID,
     secret: process.env.PLAID_SECRET,
   })
 );
 
-// Create Plaid Link Token
 router.post("/create_link_token", async (req, res) => {
   try {
     const response = await plaidClient.linkTokenCreate({
@@ -30,7 +29,6 @@ router.post("/create_link_token", async (req, res) => {
   }
 });
 
-// Exchange Token and Save Bank Account
 router.post("/exchange_public_token", async (req, res) => {
   try {
     const response = await plaidClient.itemPublicTokenExchange({
